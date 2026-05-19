@@ -4,5 +4,17 @@
     "login": "html/login.html",
     "proxy": "html/proxy.html",
     "default": "html/default.html"
+  },
+  "languages": {
+    "en": {
+      "login": "html/login.html",
+      "proxy": "html/proxy.html",
+      "default": "html/default.html"
+    },
+    "zh": {
+      "login": "html/zh/login.html",
+      "proxy": "html/zh/proxy.html",
+      "default": "html/zh/default.html"
+    }
   }
 }

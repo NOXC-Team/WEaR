@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,31 +27,31 @@ button:active{transform:scale(0.98)}
 </head>
 <body>
 <div class="container">
-<h1>Add Proxy</h1>
+<h1>添加代理</h1>
 <div class="tabs">
 <button class="tab active" onclick="switchTab('socks5')">SOCKS5</button>
 <button class="tab" onclick="switchTab('http')">HTTP</button>
 <button class="tab" onclick="switchTab('mtproto')">MTProto</button>
 </div>
 <div id="socks5">
-<div class="field"><label>Server</label><input type="text" id="s5-server" placeholder="127.0.0.1"></div>
-<div class="field"><label>Port</label><input type="number" id="s5-port" placeholder="1080"></div>
-<div class="field"><label>Username (optional)</label><input type="text" id="s5-user" placeholder=""></div>
-<div class="field"><label>Password (optional)</label><input type="password" id="s5-pass" placeholder=""></div>
-<button onclick="submit('socks5')">Add SOCKS5 Proxy</button>
+<div class="field"><label>服务器</label><input type="text" id="s5-server" placeholder="127.0.0.1"></div>
+<div class="field"><label>端口</label><input type="number" id="s5-port" placeholder="1080"></div>
+<div class="field"><label>用户名 (可选)</label><input type="text" id="s5-user" placeholder=""></div>
+<div class="field"><label>密码 (可选)</label><input type="password" id="s5-pass" placeholder=""></div>
+<button onclick="submit('socks5')">添加 SOCKS5 代理</button>
 </div>
 <div id="http" class="hidden">
-<div class="field"><label>Server</label><input type="text" id="h-server" placeholder="127.0.0.1"></div>
-<div class="field"><label>Port</label><input type="number" id="h-port" placeholder="8080"></div>
-<div class="field"><label>Username (optional)</label><input type="text" id="h-user" placeholder=""></div>
-<div class="field"><label>Password (optional)</label><input type="password" id="h-pass" placeholder=""></div>
-<button onclick="submit('http')">Add HTTP Proxy</button>
+<div class="field"><label>服务器</label><input type="text" id="h-server" placeholder="127.0.0.1"></div>
+<div class="field"><label>端口</label><input type="number" id="h-port" placeholder="8080"></div>
+<div class="field"><label>用户名 (可选)</label><input type="text" id="h-user" placeholder=""></div>
+<div class="field"><label>密码 (可选)</label><input type="password" id="h-pass" placeholder=""></div>
+<button onclick="submit('http')">添加 HTTP 代理</button>
 </div>
 <div id="mtproto" class="hidden">
-<div class="field"><label>Server</label><input type="text" id="m-server" placeholder="127.0.0.1"></div>
-<div class="field"><label>Port</label><input type="number" id="m-port" placeholder="443"></div>
-<div class="field"><label>Secret</label><input type="text" id="m-secret" placeholder="dd..."></div>
-<button onclick="submit('mtproto')">Add MTProto Proxy</button>
+<div class="field"><label>服务器</label><input type="text" id="m-server" placeholder="127.0.0.1"></div>
+<div class="field"><label>端口</label><input type="number" id="m-port" placeholder="443"></div>
+<div class="field"><label>密钥</label><input type="text" id="m-secret" placeholder="dd..."></div>
+<button onclick="submit('mtproto')">添加 MTProto 代理</button>
 </div>
 <div id="status" class="status"></div>
 </div>
@@ -65,17 +65,17 @@ let data={};
 if(type==='socks5'){data={type:'socks5',server:gv('s5-server'),port:parseInt(gv('s5-port')),username:gv('s5-user'),password:gv('s5-pass'),secret:''}}
 else if(type==='http'){data={type:'http',server:gv('h-server'),port:parseInt(gv('h-port')),username:gv('h-user'),password:gv('h-pass'),secret:''}}
 else{data={type:'mtproto',server:gv('m-server'),port:parseInt(gv('m-port')),username:'',password:'',secret:gv('m-secret')}}
-if(!data.server||!data.port){showStatus('Please fill server and port','error');return}
+if(!data.server||!data.port){showStatus('请填写服务器和端口','error');return}
 const btn=document.querySelector('#'+type+' button');
-btn.disabled=true;btn.textContent='Adding...';
+btn.disabled=true;btn.textContent='添加中...';
 fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
 .then(r=>r.json()).then(d=>{
-if(d.status==='ok'){showStatus('Added successfully','success')}
-else{showStatus(d.message||'Failed','error');btn.disabled=false;btn.textContent=getBtnText(type)}
-}).catch(()=>{showStatus('Network error','error');btn.disabled=false;btn.textContent=getBtnText(type)});
+if(d.status==='ok'){showStatus('添加成功','success')}
+else{showStatus(d.message||'添加失败','error');btn.disabled=false;btn.textContent=getBtnText(type)}
+}).catch(()=>{showStatus('网络错误','error');btn.disabled=false;btn.textContent=getBtnText(type)});
 }
 function gv(id){return document.getElementById(id).value}
-function getBtnText(t){return t==='socks5'?'Add SOCKS5 Proxy':t==='http'?'Add HTTP Proxy':'Add MTProto Proxy'}
+function getBtnText(t){return t==='socks5'?'添加 SOCKS5 代理':t==='http'?'添加 HTTP 代理':'添加 MTProto 代理'}
 function showStatus(msg,type){const s=document.getElementById('status');s.textContent=msg;s.className='status '+type}
 </script>
 </body>

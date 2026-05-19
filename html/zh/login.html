@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,22 +23,22 @@ button:active{transform:scale(0.98)}
 <body>
 <div class="container">
 <h1>Cloud Password</h1>
-<p>Enter your two-step verification password</p>
-<input type="password" id="password" placeholder="Password" autocomplete="off">
-<button onclick="submit()">Submit</button>
+<p>输入你的两步验证密码</p>
+<input type="password" id="password" placeholder="密码" autocomplete="off">
+<button onclick="submit()">提交</button>
 <div id="status" class="status"></div>
 </div>
 <script>
 function submit(){
 const pwd=document.getElementById('password').value;
-if(!pwd){showStatus('Please enter password','error');return}
+if(!pwd){showStatus('请输入密码','error');return}
 const btn=document.querySelector('button');
-btn.disabled=true;btn.textContent='Submitting...';
+btn.disabled=true;btn.textContent='提交中...';
 fetch('/api/cloud-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pwd})})
 .then(r=>r.json()).then(d=>{
-if(d.status==='ok'){showStatus('Submitted successfully','success')}
-else{showStatus(d.message||'Failed','error');btn.disabled=false;btn.textContent='Submit'}
-}).catch(()=>{showStatus('Network error','error');btn.disabled=false;btn.textContent='Submit'});
+if(d.status==='ok'){showStatus('提交成功','success')}
+else{showStatus(d.message||'提交失败','error');btn.disabled=false;btn.textContent='提交'}
+}).catch(()=>{showStatus('网络错误','error');btn.disabled=false;btn.textContent='提交'});
 }
 function showStatus(msg,type){const s=document.getElementById('status');s.textContent=msg;s.className='status '+type}
 document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')submit()});
