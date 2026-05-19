@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WearMessenger - Cloud Password</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.container{background:#16213e;border-radius:16px;padding:24px;width:100%;max-width:320px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+h1{color:#2aabee;font-size:18px;margin-bottom:8px;text-align:center}
+p{color:#888;font-size:12px;margin-bottom:16px;text-align:center}
+input{width:100%;padding:12px;background:#0f3460;border:1px solid #2aabee;border-radius:8px;color:#fff;font-size:14px;outline:none;margin-bottom:12px}
+input:focus{border-color:#4fc3f7}
+button{width:100%;padding:12px;background:#2aabee;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+button:hover{background:#4fc3f7}
+button:active{transform:scale(0.98)}
+.status{margin-top:12px;padding:8px;border-radius:6px;font-size:12px;text-align:center;display:none}
+.status.success{background:#1a3a2a;color:#81c784;display:block}
+.status.error{background:#3a1a1a;color:#ff6b6b;display:block}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Cloud Password</h1>
+<p>输入你的两步验证密码</p>
+<input type="password" id="password" placeholder="密码" autocomplete="off">
+<button onclick="submit()">提交</button>
+<div id="status" class="status"></div>
+</div>
+<script>
+function submit(){
+const pwd=document.getElementById('password').value;
+if(!pwd){showStatus('请输入密码','error');return}
+const btn=document.querySelector('button');
+btn.disabled=true;btn.textContent='提交中...';
+fetch('/api/cloud-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pwd})})
+.then(r=>r.json()).then(d=>{
+if(d.status==='ok'){showStatus('提交成功','success')}
+else{showStatus(d.message||'提交失败','error');btn.disabled=false;btn.textContent='提交'}
+}).catch(()=>{showStatus('网络错误','error');btn.disabled=false;btn.textContent='提交'});
+}
+function showStatus(msg,type){const s=document.getElementById('status');s.textContent=msg;s.className='status '+type}
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')submit()});
+</script>
+</body>
+</html>

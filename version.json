@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "pages": {
+    "login": "html/login.html",
+    "proxy": "html/proxy.html",
+    "default": "html/default.html"
+  }
+}
